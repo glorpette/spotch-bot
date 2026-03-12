@@ -26,43 +26,15 @@ class RewardCommandsComponent(commands.Component):
     #@commands.Component.listener()
     #async def event_message(self, payload: twitchio.ChatMessage) -> None:
     #    print(f"[{payload.broadcaster.name}] - {payload.chatter.name}: {payload.text}")
-
-    @commands.command(name="songqueue", aliases=["sq"])
-    async def songqueue(self, ctx: commands.Context) -> None:
-        song_queue = self.song_request_service.get_song_queue()
-        logging.info(f"Current song queue: {song_queue}")
-        if not song_queue:
-            await ctx.send("The song queue is empty.")
-            return
-        formatted_songs = self.format_numbered_list(
-            [f"{song['artists']} - {song['name']}" for song in song_queue]
-        )
-        chunks = self.split_into_chunks(formatted_songs)
-        for chunk in chunks:
-            await ctx.send(chunk)
         
-    @commands.command(name="lastsongs", aliases=["ls"])
-    async def lastsongs(self, ctx: commands.Context) -> None:
-        last_songs = self.song_request_service.get_last_songs()
-        logging.info(f"Last songs played: {last_songs}")
-        if not last_songs:
-            await ctx.send("No songs have been played yet.")
-            return
-        formatted_songs = self.format_numbered_list(
-            [f"{song['artists']} - {song['name']}" for song in last_songs]
-        )
-        chunks = self.split_into_chunks(formatted_songs)
-        for chunk in chunks:
-            await ctx.send(chunk)
-        
-    @commands.command(name="currentsong", aliases=["cs"])
+    @commands.command(name="currentsong", aliases=["song"])
     async def currentsong(self, ctx: commands.Context) -> None:
         current_song = self.song_request_service.get_current_song()
         logging.info(f"Current song: {current_song}")
         if not current_song:
             await ctx.send("No song is currently playing.")
             return
-        formatted_song = f"🎵 Now Playing: {current_song['artists']} - {current_song['name']}"
+        formatted_song = f"🎵 Now Playing: {current_song['artists']} - {current_song['name']} - {current_song['url']}"
         await ctx.send(formatted_song)
         
     @commands.command(name="findsong", aliases=["searchsong", "fs"])
