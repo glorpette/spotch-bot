@@ -34,7 +34,7 @@ class RewardCommandsComponent(commands.Component):
         if not current_song:
             await ctx.send("No song is currently playing.")
             return
-        formatted_song = f"🎵 Now Playing: {current_song['artists']} - {current_song['name']} - {current_song['url']}"
+        formatted_song = f"🎵 {current_song['artists']} - {current_song['name']} | {current_song['url']}"
         await ctx.send(formatted_song)
         
     @commands.command(name="findsong", aliases=["searchsong", "fs"])
